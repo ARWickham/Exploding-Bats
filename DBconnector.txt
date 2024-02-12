@@ -1,0 +1,17 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DBconnector extends Credentials {
+	
+	private static final String JDBC_URL = "jdbc:mysql://mi-linux.wlv.ac.uk/db2105480";
+	
+	
+	private static final String USERNAME = username;
+	private static final String PASSWORD = password;
+	
+	public static Connection getConnection() throws SQLException {
+		return DriverManager.getConnection(JDBC_URL,USERNAME,PASSWORD);
+	}
+	
+}

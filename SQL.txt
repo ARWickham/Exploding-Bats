@@ -1,0 +1,161 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.lang.StringBuilder;
+
+public class SQL {
+
+	
+	
+	public String[]  readAll(String Table,String ID,int input_ID,String[] User_Info) {
+		/*
+		Table		- the table data is being read from.
+		
+		ID			- the persons ID being read from.
+		
+		input_ID	- the Type of ID being checked Cara_ID,Elderly_ID or Contact_ID.
+		
+		User_Info	- the rows in the table being read from.
+		*/
+		
+		String[] userData = new String[User_Info.length];
+		
+		ResultSet RS;
+		
+		String [] int_types = {"Elderly_ID","Age","Contact_ID","Carer_ID"};
+		
+		StringBuilder SQLSatement =new StringBuilder("SELECT ");
+		int count = 0;
+		for(String info: User_Info) {
+			if(info == "Password") { // Can't get password
+			
+			}else if(count == 0) {
+				SQLSatement.append(info+" ");
+				count++;
+			}else {
+				SQLSatement.append(","+info+" ");
+			}
+		}
+		SQLSatement.append(" FROM "+ Table + " WHERE "+ID+" == "+input_ID);
+		
+		try {
+			Connection connection = DBconnector.getConnection();
+			PreparedStatement statement = connection.prepareStatement(SQLSatement.toString());
+			RS = statement.executeQuery();
+			
+			count = 0;
+			for(String info: User_Info) {
+				boolean isInt = false;
+				for(String int_type: int_types) {
+					if(info == int_type){
+						isInt = true;
+					}
+				}
+				if(isInt){
+					userData[count] = String.valueOf(RS.getInt(info));
+				}else {
+					userData[count] = RS.getString(info);
+				}
+				count++;
+			}
+			RS.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return userData;
+	}
+	
+	
+	
+	
+	public void insertIntoTable(String Table, String[] User_Info,String[] Data) {
+		
+		if(User_Info.length == Data.length) {
+			
+		String [] int_types = {"Elderly_ID","Age","Contact_ID","Carer_ID"};
+		
+		StringBuilder SQLSatement =new StringBuilder("INSERT INTO "+ Table +" (");
+		int count = 0;
+		for(String info: User_Info) {
+			if(info == "Password") { // Can't get password
+			
+			}else if(count == 0) {
+				SQLSatement.append(info);
+				count++;
+			}else {
+				SQLSatement.append(","+info);
+			}
+		}
+		SQLSatement.append(") VALUES (");
+		
+		count = 0;
+		for(String info: User_Info) {
+			if(info == "Password") { // Can't get password
+			
+			}else if(count == 0) {
+				SQLSatement.append("?");
+				count++;
+			}else {
+				SQLSatement.append(",?");
+			}
+		}
+		SQLSatement.append(")");
+		
+		try {
+			Connection connection = DBconnector.getConnection();
+			PreparedStatement statement = connection.prepareStatement(SQLSatement.toString());
+			
+			count = 0;
+			for(String info: User_Info) {
+				
+				boolean isInt = false;
+				for(String int_type: int_types) {
+					if(info == int_type){
+						isInt = true;
+					}
+				}				
+				if(info == "Password") { // Can't get password
+				
+				}else if(isInt) {
+					statement.setInt(count,Integer.parseInt(Data[count]));
+				}else {
+					statement.setString(count,Data[count]);
+				}
+				count++;
+			}
+		
+			statement.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		}else {
+			//not working
+		}
+	}
+	
+	public boolean readPassword(String Table,String ID,String password,int input_ID) {
+		ResultSet RS;
+		
+		boolean correct_password = false;
+		
+		String SQLSatement = "SELECT Password FROM "+Table+" WHERE "+ID+" == "+input_ID;
+				
+		try {
+			Connection connection = DBconnector.getConnection();
+			PreparedStatement statement = connection.prepareStatement(SQLSatement.toString());
+			RS = statement.executeQuery();
+			
+			if (password == RS.getString("Password")) {
+				correct_password = true;
+			}
+			
+			RS.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return correct_password;
+	}
+	
+}
