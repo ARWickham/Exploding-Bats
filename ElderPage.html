@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ElderCare App</title>
+	<link id="theme" rel = "stylesheet" type = "text/css" href = "ElderPageStylesheet.css">
+	<link id="themeb" rel = "stylesheet" type = "text/css" href = "undo.css">
+	<link id="themel" rel = "stylesheet" type = "text/css" href = "undo.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body onload=load()>
+	<h1 id = "home">The Elder Accounts</h1>
+	<div class = "columnRight">
+		<img title = "this is your profile picture" id="profilePic" onclick="plop()" src = "profilepic.png" width = "200" height = "200" border = "1px" align = "middle" />
+		<h2>User Info</h2>
+		<hr />
+		<h3>User Name</h3>
+		<p>Account ID: #####</p>
+		<p>Date of birth: ##/##/####</p>
+		<p>Additional Info: </p>
+		<p id="infoBox">############################ # # # ######</p>
+	</div>
+	<ul>
+		<li><a href="#chat" class="active" id="btn1" title="talk to your carers">Chat</a></li>
+		<li><a href="#carers" id="btn2" title="find new carers">Carers</a></li>
+		<li><a href="#settings" id="btn3" title="adjust user settings">Settings</a></li>
+		<li><a href="#contact" id="btn4">Contact</a></li>
+		<li><a href="about.html" target = "_blank">About us</a></li>
+	</ul>
+	<div id="section1" class = "column">
+		<h2>Chatting with: ###</h2>
+		<input type = "text" id="data" onfocus="this.value=''" value="enter here...">
+		<input type = "button" onclick = "send()" value = "Send" />
+		<p>info</p>
+	</div>
+	<div id="section2" class = "column">
+		<h2>Chat with: </h2>
+		<p>info</p>
+	</div>
+	<div id="section3" class = "box">
+		<h2>Accessibility Settings </h2>
+		<form>
+			<input type = "checkbox" id = "Large text" value = "on" onclick="swaplarge()"> Large Text | 
+			<input type = "checkbox" id = "Bold text" value = "on" onclick="swapbold()"> Bold Text |  
+			<input type = "checkbox" id = "mono" value = "on" onclick="swaptheme()"> Black and White Only  
+		</form>
+	</div>
+	<div id = "section4" class="box">
+		<h2>Account settings</h2>
+		<p>Description of self:</p>
+		<textarea rows = "5" name = "description" id="description">Enter description here...</textarea>
+	</div>
+	<script src="switchdisplay.js"></script>
+</body>
+</html>

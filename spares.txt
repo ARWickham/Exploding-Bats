@@ -1,0 +1,7 @@
+<script src = "switchdisplay.js" type = "text/javascript" />
+
+	<div>
+        	<button id="btn1">Show Section 1</button>
+      		<button id="btn2">Show Section 2</button>
+      		<button id="btn3">Show Section 3</button>
+    	</div>
