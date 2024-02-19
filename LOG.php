@@ -47,6 +47,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $stmtCarer->close();
 
+
+    $stmtCarer = $conn->prepare("SELECT Elderly_ID, Password FROM Elderly WHERE Name = ?");
+    $stmtCarer->bind_param("s", $username);
+    $stmtCarer->execute();
+    $resultCarer = $stmtCarer->get_result();
+    if ($resultCarer->num_rows > 0) {
+        $carerRow = $resultCarer->fetch_assoc();
+        if (password_verify($password, $carerRow['Password'])) {
+            $_SESSION['Carer_ID'] = $carerRow['Carer_ID']; 
+            $_SESSION['user'] = $username; 
+            $_SESSION['user_type'] = 'carer';
+            header("Location: ElderPage.html");
+            exit();
+        }
+    }
+    $stmtCarer->close();
+
    
 
     $loginError = 'Invalid username or password. Please try again.';
