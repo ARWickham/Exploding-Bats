@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--Document declaration, stating that is a HTML document -->
 <html>
 <head>
     <title>Login Form</title>
