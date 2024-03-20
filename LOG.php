@@ -2,7 +2,7 @@
 <!--Document declaration, stating that is a HTML document -->
 <html>
 <head>
-    <title>Login Form</title>
+    <title>Login Form</title> <!--Shown in the tab of the website, gives the page the title Login form -->
 </head>
 <body>
 
