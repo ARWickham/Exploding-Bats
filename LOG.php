@@ -8,8 +8,6 @@
 </head>
 <body>
 
-<h2>Login Form</h2> <!--Header for the page called "Login form" -->
-
 <?php
 session_start(); //Starts a new session to use session variables throughout the whole website, put at the beginning of all pages that use the variables.
 
@@ -80,17 +78,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!--HTML form for information entry-->
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
     <div class="container">
+        <h2>Login</h2> <!--Header for the page called "Login form" -->
         <!-- Username entry field -->
         <label for="username"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username" required><br>
+        <input type="text" placeholder="Enter Username" name="username" class="details" required><br>
         <!-- Password entry field-->
         <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required><br>
+        <input type="password" placeholder="Enter Password" name="password" class="details" required><br>
         <!--Login button to submit the details entered in the fields-->
-        <button type="submit">Login</button>
+        <button class="login_buttons" type="submit">Login</button>
         <!-- Button links to register as either a Carer or Elderly person -->
-        <a href="register_elderly.php"><button type="button">Register as Elderly</button></a>
-        <a href="register_carer.php"><button type="button">Register as Carer</button></a>
+        <a href="register_elderly.php"><button class="login_buttons" type="button">Register as Elderly</button></a>
+        <a href="register_carer.php"><button class="login_buttons" type="button">Register as Carer</button></a>
     </div>
 </form>
 
