@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>Login Form</title> <!--Shown in the tab of the website, gives the page the title Login form -->
+    <!--Adds a stylesheet for the login page-->
+    <link rel="stylesheet" href="LOG_style.css">
 </head>
 <body>
 
