@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Carer Registration Form</title> <!-- Displayed in the browser tab, ' Registraition Form -->
+    <link rel="stylesheet" href="Register.css">
+
 </head>
 <body>
 
@@ -51,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<h2>Carer Registration Form</h2> <!-- Creates a header for the registraition page -->
 <!-- Display success message in green text if the registraition is successful -->
 <?php if($registrationSuccess): ?>
     <p style="color: green;"><?php echo $registrationSuccess; ?></p>
@@ -63,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!--  Registraition form for entering details -->
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
     <div class="container">
+        <h2>Carer Registration Form</h2> <!-- Creates a header for the registraition page -->
         <!-- Input field for the name of the user-->
         <label for="name"><b>Name</b></label>
         <input type="text" placeholder="Enter Name" name="name" required><br>

@@ -1,0 +1,12 @@
+body {
+    background-image: url('https://mi-linux.wlv.ac.uk/~2213259/GROUP/Register_background.jpg');
+}
+
+.container {
+    background-color: blanchedalmond;
+    border: 3px black;
+    border-radius: 25px;
+    text-align: center;
+    margin-right: 750px;
+    margin-left:  750px;
+}
