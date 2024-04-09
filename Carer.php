@@ -56,6 +56,6 @@ $stmt->close(); //Closes the statement
 
 $conn->close(); //Closes database connection 
 ?>
-
+<nav>Help</nav>
 </body>
 </html>
