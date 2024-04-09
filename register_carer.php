@@ -63,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php endif; ?>
 <!--  Registraition form for entering details -->
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+<a href="LOG.php"><button class="login_buttons" type="button">Back to login page</button></a>
     <div class="container">
         <h2>Carer Registration Form</h2> <!-- Creates a header for the registraition page -->
         <!-- Input field for the name of the user-->
