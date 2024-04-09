@@ -9,7 +9,7 @@
     <title>Carer Dashboard</title>
 </head>
 <body>
-
+<nav>Help</nav>
 <?php
 session_start(); // Resumes the Login session previously stated in LOG.php
 
@@ -56,6 +56,6 @@ $stmt->close(); //Closes the statement
 
 $conn->close(); //Closes database connection 
 ?>
-<nav>Help</nav>
+
 </body>
 </html>

@@ -9,72 +9,65 @@
 <body>
 
 <?php
-session_start(); //Starts a new session to use session variables throughout the whole website, put at the beginning of all pages that use the variables.
+session_start(); // Starts a new session to use session variables throughout the whole website.
 
-$loginError = ''; //This creates a session variable to store error messages.
+$loginError = ''; // This creates a session variable to store error messages.
 
-// Check if the user submitted the form this makes sure the code only runs when the form is sent using the POST method, which keeps submitted information hidden and secure.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //Below is the database connection details/parameters which are used to connect to the database.
     $dbServername = "localhost";
     $dbUsername = "2105480"; 
     $dbPassword = "7lnrib";  
     $dbName = "db2105480";
 
-    // Connects to the database using the defined parameters.
     $conn = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
-    
-    // Check the connection and if unsuccessful display an error message
+
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    // Sanitises the Username input, attempts to stop SQL injection through the forms. 
+
     $username = $conn->real_escape_string($_POST['username']);
-    // Retrieves the password directly, doesn't need to be sanitised as the password will be hashed and comapred to the hashed password. 
-    $password = $_POST['password']; 
+    $password = $_POST['password'];
 
-    // Prepares a select statement for the Carer database.
-    $stmtCarer = $conn->prepare("SELECT Carer_ID, Password FROM Carer WHERE Name = ?");
-    $stmtCarer->bind_param("s", $username); // Binds the username user input to the query 
-    $stmtCarer->execute(); // Exectues the query 
-    $resultCarer = $stmtCarer->get_result(); // get the results from the query 
-    if ($resultCarer->num_rows > 0) { // If their are rows containing the username in the table. 
-        $carerRow = $resultCarer->fetch_assoc(); // Fetches the next row in the table, in an associative array format.
-        if (password_verify($password, $carerRow['Password'])) { // Verifies the entered password with the table 
-            // Binds values to session variables to carry across the website.
-            $_SESSION['Carer_ID'] = $carerRow['Carer_ID']; 
-            $_SESSION['user'] = $username; 
-            $_SESSION['user_type'] = 'carer';
-            header("Location: Carer.php"); //If information is entered correcly, redirect to the Carer.php page
-            exit(); // Exits the script.
-        }
+// Handling login for Carer
+$stmt = $conn->prepare("SELECT Carer_ID, Password FROM Carer WHERE Name = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    if (password_verify($password, $row['Password'])) {
+        $_SESSION['Carer_ID'] = $row['Carer_ID'];  // Use 'Carer_ID' consistently
+        $_SESSION['user'] = $username;
+        $_SESSION['user_type'] = 'carer';
+        header("Location: Carer.php"); // Redirect to a .php page
+        exit();
     }
-    $stmtCarer->close(); // And closes the statement 
+}
+$stmt->close();
 
-    // Prepares a select statement for the Elderly database.
-    $stmtCarer = $conn->prepare("SELECT Elderly_ID, Password FROM Elderly WHERE Name = ?");
-    $stmtCarer->bind_param("s", $username); // Binds the username user input to the query 
-    $stmtCarer->execute(); // Exectues the query 
-    $resultCarer = $stmtCarer->get_result(); // get the results from the query 
-    if ($resultCarer->num_rows > 0) { // If their are rows containing the username in the table. 
-        $carerRow = $resultCarer->fetch_assoc(); // Fetches the next row in the table, in an associative array format.
-        if (password_verify($password, $carerRow['Password'])) { // Verifies the entered password with the table 
-            // Binds values to session variables to carry across the website.
-            $_SESSION['Carer_ID'] = $carerRow['Carer_ID']; 
-            $_SESSION['user'] = $username; 
-            $_SESSION['user_type'] = 'carer';
-            header("Location: ElderPage.html");  //If information is entered correcly, redirect to the ElderPage.html page
-            exit(); //Exits the script
-        }
+// Handling login for Elderly
+$stmt = $conn->prepare("SELECT Elderly_ID, Password FROM Elderly WHERE Name = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    if (password_verify($password, $row['Password'])) {
+        $_SESSION['user_id'] = $row['Elderly_ID'];
+        $_SESSION['user'] = $username;
+        $_SESSION['user_type'] = 'elderly';
+        header("Location: ElderPage.html"); // Redirect to the Elderly's dashboard
+        exit();
     }
-    $stmtCarer->close(); //Closes the statement 
+}
+$stmt->close();
 
-   
-    // If either paramter is inscorrect, display the following message.
+
     $loginError = 'Invalid username or password. Please try again.';
-    $conn->close(); // Cloeses database connection 
+    $conn->close();
 }
 ?>
+
 <!--HTML form for information entry-->
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
     <div class="container">
