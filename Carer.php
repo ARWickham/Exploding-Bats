@@ -1,60 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Sets characetr set for the webpage -->
     <meta charset="UTF-8">
-    <!-- Allows for proper rending on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--Title which appears in the tab bar, "Carer Dashboard-->
     <title>Carer Dashboard</title>
+    <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="Carer.css">
 </head>
 <body>
-<nav>Help</nav>
+<nav>
+   <i class="bi bi-backspace"></i>
+   <a class='back_button' href='https://mi-linux.wlv.ac.uk/~2213259/GROUP/LOG.php'>Logout</a>
+</nav>
 <?php
-session_start(); // Resumes the Login session previously stated in LOG.php
+session_start();
 
-// If the Carer_ID session has not already been set 
 if (!isset($_SESSION['Carer_ID'])) {
-    header('Location: LOG.php'); // Redirect back to the login page, to force the variable to be filled
-    exit(); // Stops script execution and loading of the current page 
+    header('Location: LOG.php');
+    exit();
 }
 
-// Defines the database connection parameters 
 $dbServername = "localhost";
 $dbUsername = "2105480"; 
 $dbPassword = "7lnrib";  
 $dbName = "db2105480";   
 
-// Starts a connection to the databse with the credentials 
 $conn = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
 
-// If the connection failed..
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error); //Print the rror message and stops script execution 
+    die("Connection failed: " . $conn->connect_error);
 }
-// Retrieves the Carer_ID from the session variable established on the LOG.php page 
+
 $carerID = $_SESSION['Carer_ID']; 
 
-// Prepares an SQL select statement 
+// Display carer's own details
 $stmt = $conn->prepare("SELECT Name, Email, Phone_Number FROM Carer WHERE Carer_ID = ?");
-$stmt->bind_param("i", $carerID); // Binds the Carer_ID parameter to the statement 
-$stmt->execute(); // Executes the statement 
-$result = $stmt->get_result(); // Retrieves the results from the statement 
+$stmt->bind_param("i", $carerID);
+$stmt->execute();
+$result = $stmt->get_result();
 
-if ($row = $result->fetch_assoc()) { //Places the results in an associative array 
-    echo "<h1>Welcome, " . htmlspecialchars($row['Name']) . "!</h1>"; //Displays welcome message with the username escaping special characters 
-    echo "<p>Email: " . htmlspecialchars($row['Email']) . "</p>"; // Displays users email
-    echo "<p>Phone Number: " . htmlspecialchars($row['Phone_Number']) . "</p>"; // Displays users phone number 
-
-    // Provides a link to an edit information page in the form of a buttno
-    echo "<a href='edit.php'><button type='button'>Edit</button></a>";
+if ($row = $result->fetch_assoc()) {
+    echo "<h1>Welcome, " . htmlspecialchars($row['Name']) . "!</h1>";
+    echo "<p>Email: " . htmlspecialchars($row['Email']) . "</p>";
+    echo "<p>Phone Number: " . htmlspecialchars($row['Phone_Number']) . "</p>";
+    echo "<a href='edit.php'><button type='button'>Edit My Details</button></a>";
 } else {
-    echo "<p>No contact information found.</p>"; // If not details are found this message is displayed 
+    echo "<p>No contact information found.</p>";
 }
-$stmt->close(); //Closes the statement 
+$stmt->close();
 
+// Display posts made by the elderly
+echo "<h2>Posts by Elderly:</h2>";
+$stmt = $conn->prepare("SELECT p.title, p.content, e.Name FROM posts p INNER JOIN Elderly e ON p.elderly_id = e.Elderly_ID ORDER BY p.post_id DESC");
+$stmt->execute();
+$result = $stmt->get_result();
 
-$conn->close(); //Closes database connection 
+if ($result->num_rows > 0) {
+    while ($post = $result->fetch_assoc()) {
+        echo "<div class='post'>";
+        echo "<h3>" . htmlspecialchars($post['title']) . "</h3>";
+        echo "<p>" . nl2br(htmlspecialchars($post['content'])) . "</p>";
+        echo "<p>Posted by: " . htmlspecialchars($post['Name']) . "</p>";
+        echo "</div>";
+    }
+} else {
+    echo "<p>No posts found.</p>";
+}
+$stmt->close();
+
+$conn->close();
 ?>
 
 </body>
