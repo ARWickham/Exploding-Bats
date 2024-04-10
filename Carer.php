@@ -50,9 +50,22 @@ if ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-// Display posts made by the elderly
+// ... [earlier PHP code]
+
+// Display posts made by the elderly with their contact details
 echo "<h2>Posts by Elderly:</h2>";
-$stmt = $conn->prepare("SELECT p.title, p.content, e.Name FROM posts p INNER JOIN Elderly e ON p.elderly_id = e.Elderly_ID ORDER BY p.post_id DESC");
+$stmt = $conn->prepare("
+    SELECT 
+        p.title, 
+        p.content, 
+        e.Name, 
+        e.Phone_Number, 
+        e.Address_Street, 
+        e.Address_Postcode 
+    FROM posts p 
+    INNER JOIN Elderly e ON p.elderly_id = e.Elderly_ID 
+    ORDER BY p.post_id DESC
+");
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -62,12 +75,17 @@ if ($result->num_rows > 0) {
         echo "<h3>" . htmlspecialchars($post['title']) . "</h3>";
         echo "<p>" . nl2br(htmlspecialchars($post['content'])) . "</p>";
         echo "<p>Posted by: " . htmlspecialchars($post['Name']) . "</p>";
+        echo "<p>Phone Number: " . htmlspecialchars($post['Phone_Number']) . "</p>";
+        echo "<p>Address: " . htmlspecialchars($post['Address_Street']) . ", " . htmlspecialchars($post['Address_Postcode']) . "</p>";
         echo "</div>";
     }
 } else {
     echo "<p>No posts found.</p>";
 }
 $stmt->close();
+
+// ... [remainder of PHP code]
+
 
 $conn->close();
 ?>
