@@ -5,6 +5,26 @@ const section1 = document.getElementById("section1");
 const section2 = document.getElementById("section2");
 const section3 = document.getElementById("section3");
 
+function swapdescription(){
+	var fill = document.getElementById('infoBox');
+	var fillTo = document.getElementById("description").value;
+	fill.textContent = fillTo;
+	//document.getElementById("description").value = "Enter description here...";
+	alert("Changes Saved.")
+}
+function swapdob(){
+	var fill = document.getElementById('DOB');
+	var fillTo = document.getElementById("date").value;
+	fill.textContent = fillTo;
+	alert("Changes Saved.")
+}
+function swapmail(){
+	var fill = document.getElementById('email1');
+	var fillTo = document.getElementById("email").value;
+	fill.textContent = fillTo;
+	alert("Changes Saved.")
+}
+
 function plop(){
 	document.getElementById("profilePic").src = "bored.gif";
 }
@@ -50,6 +70,8 @@ function hideSection() {
         section2.style.display = "none";
 	section3.style.display = "none";
 	section4.style.display = "none";
+	section5.style.display = "none";
+	section6.style.display = "none";
 }
 
 function load() {
@@ -57,12 +79,15 @@ function load() {
         section2.style.display = "block";
 	section3.style.display = "none";
 	section4.style.display = "none";
+	section5.style.display = "none";
+	section6.style.display = "none";
 }
 
 function highlight(button) {
 	btn1.classList.remove("active");
 	btn2.classList.remove("active");
 	btn3.classList.remove("active");
+	btn4.classList.remove("active");
 	button.classList.add("active");
 }
 
@@ -83,4 +108,10 @@ btn3.addEventListener("click", () => {
 	showSection(section4);
 	copyToBox();
 	highlight(btn3);
+});
+btn4.addEventListener("click", () => {
+	hideSection();
+	showSection(section5);
+	showSection(section6);
+	highlight(btn4);
 });

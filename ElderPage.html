@@ -1,54 +1,103 @@
 <!DOCTYPE html>
 <html>
+	<!-- Declares the document as HTML -->
 <head>
+	<!-- Title appears in the tab-->
 	<title>ElderCare App</title>
+	<!-- Links to differnet external CSS stylesheets for styling the page -->
 	<link id="theme" rel = "stylesheet" type = "text/css" href = "ElderPageStylesheet.css">
 	<link id="themeb" rel = "stylesheet" type = "text/css" href = "undo.css">
 	<link id="themel" rel = "stylesheet" type = "text/css" href = "undo.css">
+	<!-- Adds a logout link to the page to go back to the login page-->
+    <a class='back_button' href='LOG.php'>Logout</a>
+	<!--Responive design for mobile devices-->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body onload=load()>
+	<!--Header for the elder accounts page-->
 	<h1 id = "home">The Elder Accounts</h1>
+	<!-- User information section on the right column -->
 	<div class = "columnRight">
+		<!--Usr profile picture display with onclick action-->
 		<img title = "this is your profile picture" id="profilePic" onclick="plop()" src = "profilepic.png" width = "200" height = "200" border = "1px" align = "middle" />
+		<!-- Static placeholders for user information -->
 		<h2>User Info</h2>
 		<hr />
 		<h3>User Name</h3>
-		<p>Account ID: #####</p>
-		<p>Date of birth: ##/##/####</p>
+		<p>Account ID:</p>
+		<p id="AcID">########</p>
+		<p>Email:</p>
+		<p id="email1">#######</p>
+		<p>Date of birth: </p>
+		<p id="DOB">##/##/####</p>
 		<p>Additional Info: </p>
-		<p id="infoBox">############################ # # # ######</p>
+		<p id="infoBox">###### #### #####</p>
 	</div>
 	<ul>
+		<!--Navigation bar linking to different functions on the webpage -->
 		<li><a href="#chat" class="active" id="btn1" title="talk to your carers">Chat</a></li>
 		<li><a href="#carers" id="btn2" title="find new carers">Carers</a></li>
 		<li><a href="#settings" id="btn3" title="adjust user settings">Settings</a></li>
-		<li><a href="#contact" id="btn4">Contact</a></li>
-		<li><a href="about.html" target = "_blank">About us</a></li>
+		<li><a href="#contact" id="btn4" title="for emergencies.">Alert</a></li>
+		<li><a href="About.html" target = "_blank">About us</a></li>
 	</ul>
+	<!--Chat section to have people talk with specific users-->
 	<div id="section1" class = "column">
 		<h2>Chatting with: ###</h2>
+		<!--Input fields for text information along with a submit button -->
 		<input type = "text" id="data" onfocus="this.value=''" value="enter here...">
 		<input type = "button" onclick = "send()" value = "Send" />
 		<p>info</p>
 	</div>
+	<!--Another chat section-->
 	<div id="section2" class = "column">
 		<h2>Chat with: </h2>
 		<p>info</p>
 	</div>
+	 <!-- Accessibility settings with options to toggle text size, bold text, and black and white theme -->
 	<div id="section3" class = "box">
 		<h2>Accessibility Settings </h2>
 		<form>
+			<!--Each checkbox calls a function to their specified use-->
 			<input type = "checkbox" id = "Large text" value = "on" onclick="swaplarge()"> Large Text | 
 			<input type = "checkbox" id = "Bold text" value = "on" onclick="swapbold()"> Bold Text |  
 			<input type = "checkbox" id = "mono" value = "on" onclick="swaptheme()"> Black and White Only  
 		</form>
 	</div>
+	<!-- Account settings section to update the user's birthdate, email, and description -->
 	<div id = "section4" class="box">
 		<h2>Account settings</h2>
-		<p>Description of self:</p>
+		<p>Date of birth:</p>
+		<!-- Placeholder Input for updating the persons birthday-->
+		<textarea rows = "1" name = "date" id="date">Date Of Birth</textarea>
+		<input type = "button" onclick = "swapdob()" value = "save" />
+		<p>Change email adress:</p>
+		<!-- Placeholder Input for updating the persons email-->
+		<textarea rows = "1" name = "email" id="email">Enter description here...</textarea>
+		<input type = "button" onclick = "swapmail()" value = "save" />
+		<p>description:</p>
+		<!--Placeholder Input for updating the persons description -->
 		<textarea rows = "5" name = "description" id="description">Enter description here...</textarea>
+		<input type = "button" onclick = "swapdescription()" value = "save" />
 	</div>
+	<!--Form for submitting a post and then calling the submit_post.php form to handle the submission-->
+	<div id = "section5" class="box">
+		<h2>Create a Post</h2>
+        	<form action="submit_post.php" method="post">
+				<!-- Input fields for title and content of the post -->
+            		<label for="postTitle">Title:</label><br>
+            		<input type="text" id="postTitle" name="postTitle"><br>
+            		<label for="postContent">Content:</label><br>
+            		<textarea id="postContent" name="postContent" rows="4"></textarea><br>
+            		<input type="submit" value="Submit">
+        	</form>
+	</div>
+	<!--Placeholder for alerts-->
+	<div id = "section6" class="box">
+		<h2>Your alerts</h2>
+		<p>p</p>
+	</div>
+	<!--Link to external Javascript code for interactive elements on the website-->
 	<script src="switchdisplay.js"></script>
 </body>
-</html>
+</html> 

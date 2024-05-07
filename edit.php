@@ -1,80 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+    <!-- Declares the document type as HTML document and sets the language to English -->
 <head>
-    <meta charset="UTF-8"> <!-- Sets the character set of the webpage -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures it displays properly on mobile devices -->
-    <title>Edit Details</title> <!-- Title that appears on tab bar of browser, edit details-->
+    <!--  Adds resposnib#ve layout for mobile devices -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title displayed in the tab -->
+    <title>Edit Details</title>
 </head>
 <body>
 
 <?php
-session_start(); // Resumes the session established on the Carer or elderly pages 
+session_start(); // Starts the session or continues a rpeviously running session
 
-if (!isset($_SESSION['Carer_ID'])) { // If the Carer_ID variable isnt set then....
-    header('Location: LOG.php'); // Redirect back to the LOG.php page 
-    exit(); // Stop execution of the script and stop loading of the page 
+// Check if the user is logged in
+if (!isset($_SESSION['Carer_ID'])) {
+    header('Location: login.php'); // Redirect to login page if the user is not logged in
+    exit();
 }
-// Establishes database connection paramters 
+
+// Database connection details
 $dbServername = "localhost";
 $dbUsername = "2105480"; 
 $dbPassword = "7lnrib";  
 $dbName = "db2105480";   
 
-// Creates a databse connection using the paramters defined 
+// Create a new database connection using the parameters
 $conn = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
 
-// If there is an error with the connection to the database...
+// Check connection and if the connection has failed display and error message 
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error); //Display the error message and ends the script
+    die("Connection failed: " . $conn->connect_error);
 }
 
-$carerID = $_SESSION['Carer_ID']; // Retrieves the Carer_ID from the session variables 
+$carerID = $_SESSION['Carer_ID']; // Retrieve the carer's ID from the session variable
 
-// If a form is submitted..
+// Check if the form has been submitted and if it has update the email and phone number 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $newEmail = $conn->real_escape_string($_POST['email']); //Sanitise the input for the email to prevent SQL injection 
-    $newPhoneNumber = $conn->real_escape_string($_POST['phone_number']); //Sanitise the input for the phone number to prevent SQL injection 
+    $newEmail = $conn->real_escape_string($_POST['email']);
+    $newPhoneNumber = $conn->real_escape_string($_POST['phone_number']);
 
-   // Prepare an UPDATE SQL statement which will update the users email and phone number 
+    // Prepare an SQL statement to update the carer's email and phone number
     $updateStmt = $conn->prepare("UPDATE Carer SET Email = ?, Phone_Number = ? WHERE Carer_ID = ?");
-    // Binds the form inputs to the statement 
     $updateStmt->bind_param("ssi", $newEmail, $newPhoneNumber, $carerID);
-    // Executes the statement 
-    $updateStmt->execute();
-    // Closes the statement 
-    $updateStmt->close();
+    $updateStmt->execute();  // Execute the statement
+    $updateStmt->close(); // Close the statement 
 
-    
-    header("Location: Carer.php"); // Redirects back to the Carer page
-    exit(); // Stops execution of the script 
+    // After the update the users should be redirected back to the Carer.php page
+    header("Location: Carer.php");
+    exit();
 }
 
-// Prepares a SELECT statement to get the users current phone number and email 
+// Prior to the form being sumbitted this query will fetch the preexiting data in the database
 $stmt = $conn->prepare("SELECT Email, Phone_Number FROM Carer WHERE Carer_ID = ?");
-$stmt->bind_param("i", $carerID); // Binds Carer_ID to the statement 
-$stmt->execute(); // Executes the statement 
-$result = $stmt->get_result(); // Gets results from the statement 
-// If theres data in the database for this user ID then prepopulate the update fields 
+$stmt->bind_param("i", $carerID);
+$stmt->execute(); // Execute the statement
+$result = $stmt->get_result(); // retrives the resulting data
+
 if ($row = $result->fetch_assoc()) {
-   // Form for editing details 
+    // If prior details have been found in the database then display them in the HTML form 
     echo "<h1>Edit Your Details</h1>";
     echo "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
-    // Email input field 
     echo "<label for='email'>Email:</label><br>";
     echo "<input type='email' name='email' value='" . htmlspecialchars($row['Email']) . "' required><br>";
-    // Phone number input field 
     echo "<label for='phone_number'>Phone Number:</label><br>";
     echo "<input type='text' name='phone_number' value='" . htmlspecialchars($row['Phone_Number']) . "' required><br>";
-    // Button to submit the updated values
     echo "<input type='submit' value='Update'>";
     echo "</form>";
 } else {
-    // If no details are found for the current user it would display a conatct support message 
+    // If there is no prior data then it suggests theres an issue an support should be contacted 
     echo "<p>No contact information found. Please contact support.</p>";
 }
 
-$stmt->close(); // Closes statement 
-$conn->close(); // Closes database connection 
+$stmt->close(); // Closes the statement
+$conn->close(); // CLoses the connection 
 ?>
 
 </body>
