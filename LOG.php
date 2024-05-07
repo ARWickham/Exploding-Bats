@@ -12,20 +12,21 @@
 session_start(); // Starts a new session to use session variables throughout the whole website.
 
 $loginError = ''; // This creates a session variable to store error messages.
-
+// DB connect paramters
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dbServername = "localhost";
     $dbUsername = "2105480"; 
     $dbPassword = "7lnrib";  
     $dbName = "db2105480";
-
+    // DB connect query
     $conn = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
-
+    // If connection fails terminate execution and display the error message 
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-
+    // Sanitisation of the username innput field 
     $username = $conn->real_escape_string($_POST['username']);
+    // Sanitisation no required for password as it is hashed
     $password = $_POST['password'];
 
 // Handling login for Carer
