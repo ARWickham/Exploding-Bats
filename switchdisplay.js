@@ -6,19 +6,24 @@ const section2 = document.getElementById("section2");
 const section3 = document.getElementById("section3");
 
 function swapdescription(){
+	//used to change the value in the text field to the box
+	//saves the two values as variables
 	var fill = document.getElementById('infoBox');
 	var fillTo = document.getElementById("description").value;
+	//transferrs one to the other
 	fill.textContent = fillTo;
 	//document.getElementById("description").value = "Enter description here...";
 	alert("Changes Saved.")
 }
 function swapdob(){
+	//same concept as above
 	var fill = document.getElementById('DOB');
 	var fillTo = document.getElementById("date").value;
 	fill.textContent = fillTo;
 	alert("Changes Saved.")
 }
 function swapmail(){
+	//same concept as above
 	var fill = document.getElementById('email1');
 	var fillTo = document.getElementById("email").value;
 	fill.textContent = fillTo;
@@ -26,21 +31,26 @@ function swapmail(){
 }
 
 function plop(){
+	//changes the profile picture
 	document.getElementById("profilePic").src = "bored.gif";
 }
 
 function showSection(section) {
+	//activates one of the sections on the page
         section.style.display = "block";
 }
 
 function copyToBox(){
+	//same as top
 	var fill = document.getElementById('infoBox').textContent;
 	document.getElementById("description").value = fill;
 }
 
 
 function swaptheme(){
+	//changes the default stylesheet to the black and white one
 	var sheets = document.getElementsByTagName('link')[0]; 
+	//because a toggle is used an if statement is used to see which is currently in use
 	if (theme.getAttribute('href') == 'ElderPageStylesheet.css'){
 		theme.setAttribute('href', 'mono.css');
 	}else{
@@ -48,6 +58,7 @@ function swaptheme(){
 	}
 }
 function swapbold(){
+	//same as above
 	var sheets = document.getElementsByTagName('link')[0]; 
 	if (themeb.getAttribute('href') == 'undo.css'){
 		themeb.setAttribute('href', 'bold.css');
@@ -56,6 +67,7 @@ function swapbold(){
 	}
 }
 function swaplarge(){
+	//same as above
 	var sheets = document.getElementsByTagName('link')[0]; 
 	if (themel.getAttribute('href') == 'undo.css'){
 		themel.setAttribute('href', 'large.css');
@@ -66,6 +78,7 @@ function swaplarge(){
 
 
 function hideSection() {
+	//hides all sections
 	section1.style.display = "none";
         section2.style.display = "none";
 	section3.style.display = "none";
@@ -75,6 +88,7 @@ function hideSection() {
 }
 
 function load() {
+	//opens section 1 and 2 on load
 	section1.style.display = "block";
         section2.style.display = "block";
 	section3.style.display = "none";
@@ -84,6 +98,7 @@ function load() {
 }
 
 function highlight(button) {
+	//used to set which button is active in nav bar
 	btn1.classList.remove("active");
 	btn2.classList.remove("active");
 	btn3.classList.remove("active");
@@ -91,10 +106,15 @@ function highlight(button) {
 	button.classList.add("active");
 }
 
+
+//all of below do the same thing just with different buttons
 btn1.addEventListener("click", () => {
+	//starts by hiding all sections
 	hideSection();
+	//show sections 1 and 2
         showSection(section1);
 	showSection(section2);
+	//sets button one as active (red)
 	highlight(btn1);
 });
 btn2.addEventListener("click", () => {
